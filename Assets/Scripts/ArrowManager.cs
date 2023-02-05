@@ -7,6 +7,7 @@ public class ArrowManager : MonoBehaviour
     public Swipe swipe;
 
     public GameObject[] arrows;
+    GameObject targetArrow;
 
     int currentArrow;
 
@@ -18,6 +19,11 @@ public class ArrowManager : MonoBehaviour
     private void Update()
     {
         MoveArrows();
+        //destroy arrow when you swipe with its direction
+        if (swipe.currentPos == System.Array.IndexOf(arrows, targetArrow))
+        {
+            Debug.Log("Array of game object");
+        }
     }
     void RandomArrows()
     {
@@ -31,9 +37,9 @@ public class ArrowManager : MonoBehaviour
     public void DestroyArrow(GameObject arrowObject)
     {
         //destroy arrow when you swipe with its direction
-        if (swipe.currentPos == arrows[currentArrow])
+        if (swipe.currentPos == System.Array.IndexOf(arrows, targetArrow))
         {
-            Destroy(arrowObject);
+            //Destroy(arrowObject);
         }
     }
 }

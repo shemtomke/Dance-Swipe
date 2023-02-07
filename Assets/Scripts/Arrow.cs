@@ -23,10 +23,22 @@ public class Arrow : MonoBehaviour
     }
     void DestroyArrow()
     {
-        if(swipe.currentPos == arrowPos)
+        if(transform.position.x < -5) //check screen size -> x axis
         {
             Destroy(this.gameObject);
-            Debug.Log("Destroyed");
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("Circle"))
+        {
+            Debug.Log("Triggered");
+
+            //swipe only when it's inside the circle
+            /*if (swipe.currentPos == arrowPos)
+            {
+                Debug.Log("Swiped Correct!");
+            }*/
         }
     }
 }

@@ -27,7 +27,7 @@ public class ArrowManager : MonoBehaviour
         myNewArrow.transform.position = new Vector3(4, -4, transform.position.z);
         myNewArrow.transform.parent = gameObject.transform;
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2f);
 
         StartCoroutine(InstantiateArrows());
     }

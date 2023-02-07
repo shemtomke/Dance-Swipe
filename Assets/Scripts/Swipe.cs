@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Swipe : MonoBehaviour
 {
+    public Transform entryPoint, exitPoint;
+
     Vector2 firstPressPos;
     Vector2 secondPressPos;
     Vector2 currentSwipe;

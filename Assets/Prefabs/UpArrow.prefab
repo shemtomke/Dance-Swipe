@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 318841132519546109}
   - component: {fileID: 318841132519546111}
   - component: {fileID: 318841132519546108}
+  - component: {fileID: 5587810965659884820}
   m_Layer: 0
   m_Name: UpArrow
   m_TagString: Untagged
@@ -98,3 +99,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arrowPos: 0
+--- !u!61 &5587810965659884820
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 318841132519546082}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.018451154, y: -0.012300491}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.99, y: 6.25}
+    newSize: {x: 3.99, y: 6.25}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 3.4118333, y: 4.4293976}
+  m_EdgeRadius: 0

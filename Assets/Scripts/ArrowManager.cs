@@ -14,28 +14,21 @@ public class ArrowManager : MonoBehaviour
     private void Start()
     {
         swipe = FindObjectOfType<Swipe>();
-        
+        StartCoroutine(InstantiateArrows());
     }
     private void Update()
     {
         currentArrow = Random.Range(0, arrows.Length);
     }
-    public void DestroyArrow(GameObject arrowObject)
-    {
-        //destroy arrow when you swipe with its direction
-        if (swipe.currentPos == arrows[currentArrow].GetInstanceID())
-        {
-            //Destroy(arrowObject);
-            Debug.Log("Destroy");
-        }
-    }
     //Instantiate arrows
     IEnumerator InstantiateArrows()
     {
-        Instantiate(arrows[currentArrow], transform.parent.position, Quaternion.identity);
+        var myNewArrow =Instantiate(arrows[currentArrow], transform.position, Quaternion.identity);
+        myNewArrow.transform.position = new Vector3(4, -4, transform.position.z);
+        myNewArrow.transform.parent = gameObject.transform;
 
         yield return new WaitForSeconds(1);
 
-
+        StartCoroutine(InstantiateArrows());
     }
 }

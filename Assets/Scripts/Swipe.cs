@@ -15,7 +15,10 @@ public class Swipe : MonoBehaviour
     /// 2 - left
     /// 3 - right
     /// </summary>
-
+    private void Start()
+    {
+        currentPos = -1;
+    }
     private void Update()
     {
         AndroidSwipe();

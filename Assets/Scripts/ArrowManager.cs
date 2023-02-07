@@ -13,33 +13,29 @@ public class ArrowManager : MonoBehaviour
 
     private void Start()
     {
-        RandomArrows();
+        swipe = FindObjectOfType<Swipe>();
         
     }
     private void Update()
     {
-        MoveArrows();
-        //destroy arrow when you swipe with its direction
-        if (swipe.currentPos == System.Array.IndexOf(arrows, targetArrow))
-        {
-            Debug.Log("Array of game object");
-        }
-    }
-    void RandomArrows()
-    {
         currentArrow = Random.Range(0, arrows.Length);
-    }
-    void MoveArrows()
-    {
-        //move arrows from left to right
-        arrows[currentArrow].transform.Translate(-0.1f, 0, 0);
     }
     public void DestroyArrow(GameObject arrowObject)
     {
         //destroy arrow when you swipe with its direction
-        if (swipe.currentPos == System.Array.IndexOf(arrows, targetArrow))
+        if (swipe.currentPos == arrows[currentArrow].GetInstanceID())
         {
             //Destroy(arrowObject);
+            Debug.Log("Destroy");
         }
+    }
+    //Instantiate arrows
+    IEnumerator InstantiateArrows()
+    {
+        Instantiate(arrows[currentArrow], transform.parent.position, Quaternion.identity);
+
+        yield return new WaitForSeconds(1);
+
+
     }
 }

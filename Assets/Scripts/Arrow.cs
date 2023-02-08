@@ -6,9 +6,11 @@ public class Arrow : MonoBehaviour
 {
     Swipe swipe;
     public int arrowPos;
+    bool isSwiped;
 
     private void Start()
     {
+        isSwiped = false;
         swipe = FindObjectOfType<Swipe>();
     }
     private void Update()
@@ -28,17 +30,52 @@ public class Arrow : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(other.CompareTag("Circle"))
+        if (collision.gameObject.CompareTag("Circle") && !isSwiped)
         {
-            Debug.Log("Triggered");
-
             //swipe only when it's inside the circle
-            /*if (swipe.currentPos == arrowPos)
+            if (swipe.currentPos == arrowPos)
             {
-                Debug.Log("Swiped Correct!");
-            }*/
+                swipe.ExpressionMessage("EXCELLENT!", "THAT'S IT!", 10);
+                isSwiped = true;
+            }
+            else
+            {
+                swipe.ExpressionMessage("TERRIBLE", "TRY AGAIN!", -3);
+            }
+        }
+    }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Circle") && !isSwiped)
+        {
+            //swipe only when it's inside the circle
+            if (swipe.currentPos == arrowPos)
+            {
+                swipe.ExpressionMessage("GOOD", "THAT'S IT!", 7);
+                isSwiped = true;
+            }
+            else
+            {
+                swipe.ExpressionMessage("BAD", "YOU CAN DO BETTER!", -5);
+            }
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Circle") && !isSwiped)
+        {
+            //swipe only when it's inside the circle
+            if (swipe.currentPos == arrowPos)
+            {
+                swipe.ExpressionMessage("GOOD", "THAT'S FAIR!", 5);
+                isSwiped = true;
+            }
+            else
+            {
+                swipe.ExpressionMessage("POOR", "ARE YOU KIDDING ME!", -8);
+            }
         }
     }
 }

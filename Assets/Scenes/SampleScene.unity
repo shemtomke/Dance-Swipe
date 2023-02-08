@@ -279,7 +279,7 @@ GameObject:
   - component: {fileID: 777557107}
   - component: {fileID: 777557106}
   m_Layer: 5
-  m_Name: Expression Message 1
+  m_Name: Expression Message 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -298,7 +298,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2010971539}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -510,7 +510,7 @@ GameObject:
   - component: {fileID: 1108511918}
   - component: {fileID: 1108511917}
   m_Layer: 5
-  m_Name: Expression Message 2
+  m_Name: Expression Message 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -529,7 +529,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2010971539}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -687,6 +687,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 744e002995be7ed49b6d1aa25204922d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  expressionTxt1: {fileID: 1108511917}
+  expressionTxt2: {fileID: 777557106}
+  score: {fileID: 0}
   entryPoint: {fileID: 0}
   exitPoint: {fileID: 0}
   currentPos: 0
@@ -764,7 +767,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 4cda44279313f2043970cce0d1e74ef4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -822,7 +825,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -921,8 +924,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1344805475}
-  - {fileID: 777557105}
   - {fileID: 1108511916}
+  - {fileID: 777557105}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

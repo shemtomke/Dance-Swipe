@@ -1,15 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Swipe : MonoBehaviour
 {
-    public Transform entryPoint, exitPoint;
+    public Text expressionTxt1, expressionTxt2, score;
 
     Vector2 firstPressPos;
     Vector2 secondPressPos;
     Vector2 currentSwipe;
 
+    int currentScore = 0;
     public int currentPos; //should match with the arrow array...
     /// <summary>
     /// 0 - up
@@ -20,11 +22,20 @@ public class Swipe : MonoBehaviour
     private void Start()
     {
         currentPos = -1;
+        expressionTxt1.text = "";
+        expressionTxt2.text = "";
+        score.text = "SCORE : " + currentScore;
     }
     private void Update()
     {
         AndroidSwipe();
         StandaloneSwipe();
+    }
+    public void ExpressionMessage(string firstMessage, string secondMessage, int pointScore)
+    {
+        expressionTxt1.text = "" + firstMessage;
+        expressionTxt2.text = "" + secondMessage;
+        score.text = "SCORE : " + pointScore + currentScore;
     }
     void AndroidSwipe()
     {

@@ -17,6 +17,13 @@ public class Arrow : MonoBehaviour
     {
         MoveArrow();
         DestroyArrow();
+
+        //Wrong Swipe
+        if (swipe.currentPos != arrowPos)
+        {
+            swipe.ExpressionMessage("POOR", "ARE YOU KIDDING ME!", 0);
+            isSwiped = true;
+        }
     }
     void MoveArrow()
     {
@@ -37,12 +44,9 @@ public class Arrow : MonoBehaviour
             //swipe only when it's inside the circle
             if (swipe.currentPos == arrowPos)
             {
-                swipe.ExpressionMessage("EXCELLENT!", "THAT'S IT!", 10);
+                swipe.ExpressionMessage("GOOD TRIAL", "YOU CAN DO BETTER!", 1);
                 isSwiped = true;
-            }
-            else
-            {
-                swipe.ExpressionMessage("TERRIBLE", "TRY AGAIN!", -3);
+                transform.position = new Vector3(transform.position.x + 0.02f, transform.position.y + 0.02f, transform.position.z + 0.02f);
             }
         }
     }
@@ -53,13 +57,10 @@ public class Arrow : MonoBehaviour
             //swipe only when it's inside the circle
             if (swipe.currentPos == arrowPos)
             {
-                swipe.ExpressionMessage("GOOD", "THAT'S IT!", 7);
+                swipe.ExpressionMessage("EXCELLENT!", "THAT'S IT!", 10);
                 isSwiped = true;
             }
-            else
-            {
-                swipe.ExpressionMessage("BAD", "YOU CAN DO BETTER!", -5);
-            }
+           
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -69,13 +70,16 @@ public class Arrow : MonoBehaviour
             //swipe only when it's inside the circle
             if (swipe.currentPos == arrowPos)
             {
-                swipe.ExpressionMessage("GOOD", "THAT'S FAIR!", 5);
+                swipe.ExpressionMessage("POOR", "ARE YOU KIDDING ME!", 0);
                 isSwiped = true;
-            }
-            else
-            {
-                swipe.ExpressionMessage("POOR", "ARE YOU KIDDING ME!", -8);
             }
         }
     }
+    /*On entering the circle --> excelent
+     * if you do a wrong direction then wrong points/text motivation regardless of where you do it
+     * if you do it correct but on enter of the circle then --> To early! (Good)
+     * if you do it exiting the circle --> To late! (Poor)
+     * You only get a chance to swipe once 
+     * when swiping an arrow then it should glow
+     */
 }

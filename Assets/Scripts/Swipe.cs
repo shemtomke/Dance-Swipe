@@ -11,7 +11,7 @@ public class Swipe : MonoBehaviour
     Vector2 secondPressPos;
     Vector2 currentSwipe;
 
-    int currentScore = 0;
+    public int currentScore;
     public int currentPos; //should match with the arrow array...
     /// <summary>
     /// 0 - up
@@ -30,12 +30,14 @@ public class Swipe : MonoBehaviour
     {
         AndroidSwipe();
         StandaloneSwipe();
+        ArrowsStandalone();
     }
     public void ExpressionMessage(string firstMessage, string secondMessage, int pointScore)
     {
         expressionTxt1.text = "" + firstMessage;
         expressionTxt2.text = "" + secondMessage;
-        score.text = "SCORE : " + pointScore + currentScore;
+        currentScore += pointScore;
+        score.text = "SCORE : " + currentScore;
     }
     void AndroidSwipe()
     {
@@ -61,26 +63,22 @@ public class Swipe : MonoBehaviour
                 //swipe upwards
                 if((currentSwipe.y > 0) && (currentSwipe.x > -0.5f) && (currentSwipe.x < 0.5f))
                 {
-                    Debug.Log("up swipe");
-                    
+                    currentPos = 0;
                 }
                 //swipe down
                 if ((currentSwipe.y < 0) && (currentSwipe.x > -0.5f) && (currentSwipe.x < 0.5f))
                 {
-                    Debug.Log("down swipe");
-
+                    currentPos = 1;
                 }
                 //swipe left
                 if ((currentSwipe.x < 0) && (currentSwipe.y > -0.5f) && (currentSwipe.y < 0.5f))
                 {
-                    Debug.Log("left swipe");
-
+                    currentPos = 2;
                 }
                 //swipe right
                 if ((currentSwipe.x > 0) && (currentSwipe.y > -0.5f) && (currentSwipe.y < 0.5f))
                 {
-                    Debug.Log("right swipe");
-
+                    currentPos = 3;
                 }
             }
         }
@@ -107,27 +105,42 @@ public class Swipe : MonoBehaviour
             //swipe upwards
             if ((currentSwipe.y > 0) && (currentSwipe.x > -0.5f) && (currentSwipe.x < 0.5f))
             {
-                Debug.Log("up swipe");
                 currentPos = 0;
             }
             //swipe down
             if ((currentSwipe.y < 0) && (currentSwipe.x > -0.5f) && (currentSwipe.x < 0.5f))
             {
-                Debug.Log("down swipe");
                 currentPos = 1;
             }
             //swipe left
             if ((currentSwipe.x < 0) && (currentSwipe.y > -0.5f) && (currentSwipe.y < 0.5f))
             {
-                Debug.Log("left swipe");
                 currentPos = 2;
             }
             //swipe right
             if ((currentSwipe.x > 0) && (currentSwipe.y > -0.5f) && (currentSwipe.y < 0.5f))
             {
-                Debug.Log("right swipe");
                 currentPos = 3;
             }
+        }
+    }
+    void ArrowsStandalone()
+    {
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            currentPos = 0;
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            currentPos = 1;
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            currentPos = 2;
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            currentPos = 3;
         }
     }
 }

@@ -24,7 +24,7 @@ public class ArrowManager : MonoBehaviour
     IEnumerator InstantiateArrows()
     {
         var myNewArrow =Instantiate(arrows[currentArrow], transform.position, Quaternion.identity);
-        myNewArrow.transform.position = new Vector3(4, -4, transform.position.z);
+        myNewArrow.transform.position = new Vector3(3.9f, -3.9f, transform.position.z);
         myNewArrow.transform.parent = gameObject.transform;
 
         yield return new WaitForSeconds(2f);

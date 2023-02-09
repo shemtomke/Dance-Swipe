@@ -690,6 +690,7 @@ MonoBehaviour:
   expressionTxt1: {fileID: 1108511917}
   expressionTxt2: {fileID: 777557106}
   score: {fileID: 1344805476}
+  currentScore: 0
   currentPos: 0
 --- !u!4 &1516903682
 Transform:
@@ -785,8 +786,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1600908937}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -4, z: 0}
-  m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
+  m_LocalPosition: {x: 0, y: -3.9, z: 0}
+  m_LocalScale: {x: 0.07, y: 0.07, z: 0.07}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}

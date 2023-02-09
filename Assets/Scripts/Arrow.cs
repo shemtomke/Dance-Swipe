@@ -18,12 +18,11 @@ public class Arrow : MonoBehaviour
         MoveArrow();
         DestroyArrow();
 
-        //Wrong Swipe
-        if (swipe.currentPos != arrowPos)
-        {
-            swipe.ExpressionMessage("POOR", "ARE YOU KIDDING ME!", 0);
-            isSwiped = true;
-        }
+        //WrongSwipe();
+
+        EntersCircle();
+        InsideCircle();
+        OutsideCircle();
     }
     void MoveArrow()
     {
@@ -37,7 +36,74 @@ public class Arrow : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+
+    void EntersCircle()
+    {
+        if((transform.position.x <= 1 && transform.position.x > 0.22) && !isSwiped)
+        {
+            //good
+            if (swipe.currentPos == arrowPos)
+            {
+                swipe.ExpressionMessage("GOOD TRIAL", "YOU CAN DO BETTER!", 1);
+                isSwiped = true;
+            }
+            else
+            {
+                swipe.ExpressionMessage("WELL!", "YOU ARE A JOKER!", 0);
+                isSwiped = true;
+            }
+        }
+
+        //Swiped before the arrow reaching the circle pos
+        if(transform.position.x > 1 && !isSwiped)
+        {
+            //BAD
+            if (swipe.currentPos == arrowPos)
+            {
+                swipe.ExpressionMessage("POOR", "ARE YOU KIDDING ME!", 0);
+                isSwiped = true;
+            }
+        }
+    }
+    void InsideCircle()
+    {
+        if(transform.position.x < 0.22 && transform.position.x > -0.22 && !isSwiped)
+        {
+            //Excellent
+            if (swipe.currentPos == arrowPos)
+            {
+                swipe.ExpressionMessage("EXCELLENT!", "THAT'S IT!", 10);
+                isSwiped = true;
+            }
+            else
+            {
+                swipe.ExpressionMessage("TRY AGAIN!", "YOU GOTTA BE KIDDING ME", 0);
+                isSwiped = true;
+            }
+        }
+    }
+    void OutsideCircle()
+    {
+        if ((transform.position.x < -1 || (transform.position.x >= -1 && transform.position.x < -0.22)) && !isSwiped)
+        {
+            //Terrible
+            if (swipe.currentPos == arrowPos)
+            {
+                swipe.ExpressionMessage("POOR", "ARE YOU KIDDING ME!", 0);
+                isSwiped = true;
+            }
+        }
+    }
+    void WrongSwipe()
+    {
+        //Wrong Swipe
+        if (swipe.currentPos != arrowPos)
+        {
+            swipe.ExpressionMessage("POOR", "ARE YOU KIDDING ME!", 0);
+            isSwiped = true;
+        }
+    }
+    /*private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Circle") && !isSwiped)
         {
@@ -74,7 +140,7 @@ public class Arrow : MonoBehaviour
                 isSwiped = true;
             }
         }
-    }
+    }*/
     /*On entering the circle --> excelent
      * if you do a wrong direction then wrong points/text motivation regardless of where you do it
      * if you do it correct but on enter of the circle then --> To early! (Good)
@@ -82,4 +148,10 @@ public class Arrow : MonoBehaviour
      * You only get a chance to swipe once 
      * when swiping an arrow then it should glow
      */
+    /*
+     * x - 0.8 -> entry to the circle
+     * x - 0 -> inside the circle
+     * x - -0.8 -> outside the circle
+     */
+
 }

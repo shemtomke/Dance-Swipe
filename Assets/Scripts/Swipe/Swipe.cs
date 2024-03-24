@@ -9,19 +9,7 @@ public class Swipe : MonoBehaviour
     Vector2 secondPressPos;
     Vector2 currentSwipe;
 
-    public int currentPos; //should match with the arrow array...
-
-    /// <summary>
-    /// 0 - up
-    /// 1 - down
-    /// 2 - left
-    /// 3 - right
-    /// </summary>
-
-    private void Start()
-    {
-        currentPos = -1;
-    }
+    public ArrowState arrowState;
     private void Update()
     {
         AndroidSwipe();
@@ -51,22 +39,22 @@ public class Swipe : MonoBehaviour
                 //swipe upwards
                 if((currentSwipe.y > 0) && (currentSwipe.x > -0.5f) && (currentSwipe.x < 0.5f))
                 {
-                    currentPos = 0;
+                    arrowState = ArrowState.Up;
                 }
                 //swipe down
                 if ((currentSwipe.y < 0) && (currentSwipe.x > -0.5f) && (currentSwipe.x < 0.5f))
                 {
-                    currentPos = 1;
+                    arrowState = ArrowState.Down;
                 }
                 //swipe left
                 if ((currentSwipe.x < 0) && (currentSwipe.y > -0.5f) && (currentSwipe.y < 0.5f))
                 {
-                    currentPos = 2;
+                    arrowState = ArrowState.Left;
                 }
                 //swipe right
                 if ((currentSwipe.x > 0) && (currentSwipe.y > -0.5f) && (currentSwipe.y < 0.5f))
                 {
-                    currentPos = 3;
+                    arrowState = ArrowState.Right;
                 }
             }
         }
@@ -75,19 +63,19 @@ public class Swipe : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            currentPos = 0;
+            arrowState = ArrowState.Up;
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            currentPos = 1;
+            arrowState = ArrowState.Down;
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            currentPos = 2;
+            arrowState = ArrowState.Left;
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            currentPos = 3;
+            arrowState = ArrowState.Right;
         }
     }
 }

@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
-    public int arrowPos;
+    public ArrowState arrowState;
     bool isSwiped;
 
     Swipe swipe;
     ExpressionManager expressionManager;
+    Player player;
     private void Start()
     {
+        player = FindObjectOfType<Player>();
         swipe = FindObjectOfType<Swipe>();
         expressionManager = FindObjectOfType<ExpressionManager>();
 
@@ -44,10 +46,11 @@ public class Arrow : MonoBehaviour
         if((transform.position.x <= 1 && transform.position.x > 0.22) && !isSwiped)
         {
             //good
-            if (swipe.currentPos == arrowPos)
+            if (swipe.arrowState == arrowState)
             {
                 expressionManager.ExpressionMessage("GOOD TRIAL", "YOU CAN DO BETTER!", 1);
                 isSwiped = true;
+                player.TriggerAnimation(arrowState.ToString().ToLower());
             }
             /*else
             {
@@ -60,7 +63,7 @@ public class Arrow : MonoBehaviour
         if(transform.position.x > 1 && !isSwiped)
         {
             //BAD
-            if (swipe.currentPos == arrowPos)
+            if (swipe.arrowState == arrowState)
             {
                 expressionManager.ExpressionMessage("POOR", "ARE YOU KIDDING ME!", 0);
                 isSwiped = true;
@@ -72,10 +75,11 @@ public class Arrow : MonoBehaviour
         if(transform.position.x < 0.22 && transform.position.x > -0.22 && !isSwiped)
         {
             //Excellent
-            if (swipe.currentPos == arrowPos)
+            if (swipe.arrowState == arrowState)
             {
                 expressionManager.ExpressionMessage("EXCELLENT!", "THAT'S IT!", 10);
                 isSwiped = true;
+                player.TriggerAnimation(arrowState.ToString().ToLower());
             }
             /*else
             {
@@ -89,7 +93,7 @@ public class Arrow : MonoBehaviour
         if ((transform.position.x < -1 || (transform.position.x >= -1 && transform.position.x < -0.22)) && !isSwiped)
         {
             //Terrible
-            if (swipe.currentPos == arrowPos)
+            if (swipe.arrowState == arrowState)
             {
                 expressionManager.ExpressionMessage("POOR", "ARE YOU KIDDING ME!", 0);
                 isSwiped = true;

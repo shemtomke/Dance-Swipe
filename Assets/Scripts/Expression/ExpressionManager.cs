@@ -15,7 +15,6 @@ public class ExpressionManager : MonoBehaviour
     {
         scoreManager = FindObjectOfType<ScoreManager>();
 
-
         expressionTxt1.text = "";
         expressionTxt2.text = "";
     }

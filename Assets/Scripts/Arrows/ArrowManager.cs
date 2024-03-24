@@ -32,3 +32,8 @@ public class ArrowManager : MonoBehaviour
         StartCoroutine(InstantiateArrows());
     }
 }
+
+public enum ArrowState
+{
+    Up, Down, Left, Right
+}

@@ -18,11 +18,20 @@ public class ExpressionManager : MonoBehaviour
         expressionTxt1.text = "";
         expressionTxt2.text = "";
     }
-
     public void ExpressionMessage(string firstMessage, string secondMessage, int pointScore)
     {
-        expressionTxt1.text = "" + firstMessage;
-        expressionTxt2.text = "" + secondMessage;
+        StartCoroutine(ShowExpressionMessage(firstMessage, secondMessage, pointScore));
+    }
+    private IEnumerator ShowExpressionMessage(string firstMessage, string secondMessage, int pointScore)
+    {
+        expressionTxt1.text = firstMessage;
+        expressionTxt2.text = secondMessage;
         scoreManager.currentScore += pointScore;
+
+        yield return new WaitForSeconds(2f); // Wait for 2 seconds
+
+        // Reset the text fields if needed
+        expressionTxt1.text = "";
+        expressionTxt2.text = "";
     }
 }

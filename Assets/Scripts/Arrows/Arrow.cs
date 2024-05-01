@@ -21,17 +21,14 @@ public class Arrow : MonoBehaviour
     private void Update()
     {
         MoveArrow();
-
-        EntersCircle();
-        InsideCircle();
-        OutsideCircle();
+        ArrowSwipe();
 
         DestroyArrow();
     }
     void MoveArrow()
     {
-        //move arrow from left to right
-        transform.Translate(-0.01f, 0, 0);
+        // Move the object from right to left
+        transform.Translate(Vector3.left * ArrowManager.Instance.arrowSpeed * Time.deltaTime);
     }
     void DestroyArrow()
     {
@@ -40,10 +37,31 @@ public class Arrow : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
-
-    void EntersCircle()
+    void ArrowSwipe()
     {
-        if((transform.position.x <= 1 && transform.position.x > 0.22) && !isSwiped)
+        BeforeEnteringCircle();
+        //CircleBorder();
+        InsideCircle();
+        ExitingCircle();
+    }
+    void BeforeEnteringCircle()
+    {
+        //Swiped before the arrow reaching the circle pos
+        if (transform.position.x >= 1 && !isSwiped)
+        {
+            //BAD
+            if (swipe.arrowState == arrowState)
+            {
+                expressionManager.ExpressionMessage("POOR", "ARE YOU KIDDING ME!", 0);
+                isSwiped = true;
+            }
+
+            swipe.arrowState = ArrowState.None;
+        }
+    }
+    void CircleBorder()
+    {
+        if (((transform.position.x >= -1 && transform.position.x <= -0.22) || (transform.position.x >= 0.22 && transform.position.x <= 1)) && !isSwiped)
         {
             //good
             if (swipe.arrowState == arrowState)
@@ -52,27 +70,18 @@ public class Arrow : MonoBehaviour
                 isSwiped = true;
                 player.TriggerAnimation(arrowState.ToString().ToLower());
             }
-            /*else
+            else
             {
-                swipe.ExpressionMessage("WELL!", "YOU ARE A JOKER!", 0);
-                isSwiped = true;
-            }*/
-        }
-
-        //Swiped before the arrow reaching the circle pos
-        if(transform.position.x > 1 && !isSwiped)
-        {
-            //BAD
-            if (swipe.arrowState == arrowState)
-            {
-                expressionManager.ExpressionMessage("POOR", "ARE YOU KIDDING ME!", 0);
+                expressionManager.ExpressionMessage("WELL!", "YOU ARE A JOKER!", 0);
                 isSwiped = true;
             }
+
+            swipe.arrowState = ArrowState.None;
         }
     }
     void InsideCircle()
     {
-        if(transform.position.x < 0.22 && transform.position.x > -0.22 && !isSwiped)
+        if(transform.position.x <= 0.22 && transform.position.x >= -0.22 && !isSwiped)
         {
             //Excellent
             if (swipe.arrowState == arrowState)
@@ -81,23 +90,22 @@ public class Arrow : MonoBehaviour
                 isSwiped = true;
                 player.TriggerAnimation(arrowState.ToString().ToLower());
             }
-            /*else
+            else
             {
-                swipe.ExpressionMessage("TRY AGAIN!", "YOU GOTTA BE KIDDING ME", 0);
-                isSwiped = true;
-            }*/
-        }
-    }
-    void OutsideCircle()
-    {
-        if ((transform.position.x < -1 || (transform.position.x >= -1 && transform.position.x < -0.22)) && !isSwiped)
-        {
-            //Terrible
-            if (swipe.arrowState == arrowState)
-            {
-                expressionManager.ExpressionMessage("POOR", "ARE YOU KIDDING ME!", 0);
+                expressionManager.ExpressionMessage("TRY AGAIN!", "YOU GOTTA BE KIDDING ME", 0);
                 isSwiped = true;
             }
+
+            swipe.arrowState = ArrowState.None;
+        }
+    }
+    void ExitingCircle()
+    {
+        if (transform.position.x < -1 && !isSwiped)
+        {
+            expressionManager.ExpressionMessage("POOR", "ARE YOU KIDDING ME!", 0);
+            isSwiped = true;
+            swipe.arrowState = ArrowState.None;
         }
     }
 }

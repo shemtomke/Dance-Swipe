@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class ArrowManager : MonoBehaviour
 {
+    public static ArrowManager Instance;
+    private void Awake()
+    {
+        Instance = this;
+    }
     public Swipe swipe;
-
     public GameObject[] arrows;
-    GameObject targetArrow;
 
     int currentArrow;
+    public int arrowSpeed;
 
     private void Start()
     {
@@ -20,20 +24,24 @@ public class ArrowManager : MonoBehaviour
     {
         currentArrow = Random.Range(0, arrows.Length);
     }
-    //Instantiate arrows
+    // Instantiate arrows
     IEnumerator InstantiateArrows()
     {
-        var myNewArrow =Instantiate(arrows[currentArrow], transform.position, Quaternion.identity);
-        myNewArrow.transform.position = new Vector3(3.9f, -3.9f, transform.position.z);
-        myNewArrow.transform.parent = gameObject.transform;
+        while (true)
+        {
+            if (!AudioManager.Instance.selectedMusic.isPlaying)
+            {
+                Debug.Log("Game Over"); // Add a debug message for game over
+                yield break; // Exit the coroutine
+            }
 
-        yield return new WaitForSeconds(2f);
+            currentArrow = Random.Range(0, arrows.Length);
+            var myNewArrow = Instantiate(arrows[currentArrow], transform.position, Quaternion.identity);
+            myNewArrow.transform.position = new Vector3(3.9f, -3.5f, transform.position.z);
+            myNewArrow.transform.parent = gameObject.transform;
 
-        StartCoroutine(InstantiateArrows());
+            // Have an incremented/random timer interval
+            yield return new WaitForSeconds(3f);
+        }
     }
-}
-
-public enum ArrowState
-{
-    Up, Down, Left, Right
 }

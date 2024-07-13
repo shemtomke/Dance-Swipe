@@ -6,32 +6,76 @@ using UnityEngine.UI;
 
 public class ExpressionManager : MonoBehaviour
 {
-    public Text expressionTxt1, expressionTxt2;
+    public GameObject commentPrefab;
+    public Transform commentPosition;
+    public GameObject emojiPrefab;
     [NonReorderable]
-    public List<Expression> expressions;
+    public List<Sprite> positiveEmoji;
+    [NonReorderable]
+    public List<Sprite> negativeEmoji;
+    [NonReorderable]
+    public List<Expression> expression;
+    [NonReorderable]
+    public List<Expression> comboExpression;
+    [NonReorderable]
+    public List<Expression> goodExpression;
+    [NonReorderable]
+    public List<Expression> badExpression;
 
-    ScoreManager scoreManager;
+    Likes likes;
     private void Start()
     {
-        scoreManager = FindObjectOfType<ScoreManager>();
+        likes = FindObjectOfType<Likes>();
+    }
+    public void ShowCommentMessage(int pointScore, bool isGood)
+    {
+        StartCoroutine(ShowExpressionMessage(pointScore, isGood));
+    }
+    public void PerformCombo(int pointScore, int clickedButtons)
+    {
+        StartCoroutine(ShowExpressionMessage(pointScore, clickedButtons));
+    }
+    private IEnumerator ShowExpressionMessage(int pointScore, bool isGood)
+    {
+        GenerateEmoji(isGood);
+        likes.AddLikes(pointScore);
 
-        expressionTxt1.text = "";
-        expressionTxt2.text = "";
+        yield return null;
     }
-    public void ExpressionMessage(string firstMessage, string secondMessage, int pointScore)
+    private IEnumerator ShowExpressionMessage(int pointScore, int clickedButtons)
     {
-        StartCoroutine(ShowExpressionMessage(firstMessage, secondMessage, pointScore));
-    }
-    private IEnumerator ShowExpressionMessage(string firstMessage, string secondMessage, int pointScore)
-    {
-        expressionTxt1.text = firstMessage;
-        expressionTxt2.text = secondMessage;
-        scoreManager.currentScore += pointScore;
+        GameObject comment = Instantiate(commentPrefab);
+        comment.transform.SetParent(commentPosition, false);
+
+        UserComment userComment = comment.GetComponent<UserComment>();
+
+        int randomExpression = Random.Range(0, comboExpression.Count);
+        userComment.commentText.text = comboExpression[randomExpression].expression;
+
+        likes.AddLikes(pointScore * clickedButtons);
 
         yield return new WaitForSeconds(2f); // Wait for 2 seconds
 
-        // Reset the text fields if needed
-        expressionTxt1.text = "";
-        expressionTxt2.text = "";
+        Destroy(comment);
+    }
+    public Sprite SelectEmoji(bool isPositive)
+    {
+        if (isPositive)
+        {
+            int randomndex = Random.Range(0, positiveEmoji.Count);
+            return positiveEmoji[randomndex];
+        }
+        else
+        {
+            int randomndex = Random.Range(0, negativeEmoji.Count);
+            return positiveEmoji[randomndex];
+        }
+    }
+    public void GenerateEmoji(bool isPositive)
+    {
+        GameObject emojiObj = Instantiate(emojiPrefab, emojiPrefab.transform.position, Quaternion.identity);
+
+        Emoji emoji = emojiObj.GetComponent<Emoji>();
+        emoji.sprite = SelectEmoji(isPositive);
     }
 }

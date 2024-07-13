@@ -7,5 +7,6 @@ using UnityEngine;
 public class Expression
 {
     public string expression;
+    public Sprite expressionSprite;
     public AudioClip clip;
 }

@@ -7,5 +7,8 @@ using UnityEngine;
 public class Character
 {
     public string characterName;
-    public GameObject character;
+    public int unlockableCoinsAmount;
+    public bool isLocked = true;
+    public bool isSelected = false;
+    public Mesh characterMesh;
 }

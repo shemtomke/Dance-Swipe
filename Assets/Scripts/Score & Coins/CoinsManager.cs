@@ -8,18 +8,20 @@ public class CoinsManager : MonoBehaviour
     public Text coinsText;
     public int coins;
 
-    ScoreManager scoreManager;
+    Followers followers;
     private void Start()
     {
-        scoreManager = FindObjectOfType<ScoreManager>();
+        followers = FindObjectOfType<Followers>();
     }
     public void ConvertToCoins()
     {
         // for each 100 points is 1 coin
         if(GameManager.Instance.isGameOver || GameManager.Instance.isWin)
         {
-            int score = scoreManager.GetScore();
-            coins += Mathf.FloorToInt(score / 100f);
+            //followers.AddFollowers()
+            //int score = scoreManager.GetScore();
+
+            //coins += Mathf.FloorToInt(score / 100f);
         }
     }
 }

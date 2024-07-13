@@ -10,6 +10,11 @@ public class Swipe : MonoBehaviour
     Vector2 currentSwipe;
 
     public ArrowState arrowState;
+    public Circle circle;
+    private void Start()
+    {
+        
+    }
     private void Update()
     {
         AndroidSwipe();
@@ -56,6 +61,8 @@ public class Swipe : MonoBehaviour
                 {
                     arrowState = ArrowState.Right;
                 }
+
+                circle.StartAnim();
             }
         }
     }
@@ -64,18 +71,22 @@ public class Swipe : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             arrowState = ArrowState.Up;
+            circle.StartAnim();
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             arrowState = ArrowState.Down;
+            circle.StartAnim();
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             arrowState = ArrowState.Left;
+            circle.StartAnim();
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             arrowState = ArrowState.Right;
+            circle.StartAnim();
         }
     }
 }

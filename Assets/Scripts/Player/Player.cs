@@ -4,28 +4,11 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public GameObject currentPlayer;
+    public SkinnedMeshRenderer currentPlayerMesh;
     public Animator anim;
 
-    public void TriggerAnimation(string triggerName)
+    public void UpdatePlayerCharacterMesh(Mesh mesh)
     {
-        switch (triggerName)
-        {
-            case "up":
-                anim.SetTrigger("up");
-                break;
-            case "down":
-                anim.SetTrigger("down");
-                break;
-            case "left":
-                anim.SetTrigger("left");
-                break;
-            case "right":
-                anim.SetTrigger("right");
-                break;
-            default:
-                Debug.LogWarning("Unknown trigger: " + triggerName);
-                break;
-        }
+        currentPlayerMesh.sharedMesh = mesh;
     }
 }

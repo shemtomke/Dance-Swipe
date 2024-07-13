@@ -4,47 +4,50 @@ using UnityEngine;
 
 public class AnimationManager : MonoBehaviour
 {
-    public List<AnimationClip> danceAnimations;
+    [NonReorderable]
+    public List<DanceAnimation> allDanceAnimations;
 
+    public Animator danceStyleAnimator;
+    public string currentPlayerState, currentDanceStyleState;
     Player player;
-
+    ShopManager shopManager;
     private void Start()
     {
         player = FindObjectOfType<Player>();
     }
-
     private void Update()
     {
-        // Get the current state information of the Animator
-        AnimatorStateInfo stateInfo = player.anim.GetCurrentAnimatorStateInfo(0);
-
-        // Get current animator state -> Up/Down/Left/Right
-
-        // Change the motion Clip to be random from the dance animation clips
-        // AnimatorState animatorState = player.anim;
-
-        // Check if the Animator is playing a motion
-        if (stateInfo.IsName("Up"))
-        {
-            Debug.Log("Motion Up is active");
-        }
-        if (stateInfo.IsName("Down"))
-        {
-            Debug.Log("Motion Down is active");
-        }
-        if (stateInfo.IsName("Left"))
-        {
-            Debug.Log("Motion Left is active");
-        }
-        if (stateInfo.IsName("Right"))
-        {
-            Debug.Log("Motion Right is active");
-        }
+        
     }
-    int RandomAnimationClip()
+    public void ChangeAnimationState(Animator animator, string newState, string currentState)
     {
-        // Generate a random index within the range of danceAnimations indices
-        int randomIndex = Random.Range(0, danceAnimations.Count);
-        return randomIndex;
+        if (currentState == newState) return;
+
+        animator.Play(newState);
+        currentState = newState;
+    }
+    public string GetRandomAnimation()
+    {
+        // Create a list to hold unlocked animations
+        List<AnimationClip> unlockedAnimations = new List<AnimationClip>();
+
+        // Populate the list with unlocked animations
+        foreach (var animation in allDanceAnimations)
+        {
+            if (!animation.isLocked)
+            {
+                unlockedAnimations.Add(animation.clip);
+            }
+        }
+
+        // If there are no unlocked animations, return null
+        if (unlockedAnimations.Count == 0)
+        {
+            return null;
+        }
+
+        // Select a random animation from the list of unlocked animations
+        int randomIndex = Random.Range(0, unlockedAnimations.Count);
+        return unlockedAnimations[randomIndex].name;
     }
 }

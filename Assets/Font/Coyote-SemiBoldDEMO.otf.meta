@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: e8e7a39bb517b2741b2be1d4917b078e
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Coyote
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 54aeec2819a04444f93f720291fac79d, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

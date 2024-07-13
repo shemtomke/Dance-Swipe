@@ -12,15 +12,13 @@ public class AudioManager : MonoBehaviour
 
     public AudioSource backgroundMusic;
     public AudioSource selectedMusic;
-
-    private void Start()
+    private void Update()
     {
-        AddSelectedMusic();
-        PlaySelectedMusic();
+        
     }
-    public void AddSelectedMusic()
+    public void AddSelectedMusic(Music music)
     {
-        selectedMusic.clip = ShopManager.Instance.musicList[ShopManager.Instance.currentSelectedMusic].audioClip;
+        selectedMusic.clip = music.audioClip;
     }
     public void PlaySelectedMusic()
     {

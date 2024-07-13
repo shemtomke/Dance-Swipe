@@ -5,8 +5,8 @@ using UnityEngine;
 public class Circle : MonoBehaviour
 {
     public Animator animator;
-    public void PlayAnim()
+    public void StartAnim()
     {
-        
+        animator.SetTrigger("isSwipe");
     }
 }

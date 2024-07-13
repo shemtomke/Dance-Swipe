@@ -17,3 +17,8 @@ public enum ArrowState
 {
     None, Up, Down, Left, Right
 }
+public enum ChallengeType
+{
+    Statement,
+    ProgressBar,
+}

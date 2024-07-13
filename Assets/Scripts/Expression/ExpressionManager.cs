@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class ExpressionManager : MonoBehaviour
 {
+    public List<GameObject> comboEffects;
     public GameObject commentPrefab;
     public Transform commentPosition;
     public GameObject emojiPrefab;

@@ -14,17 +14,21 @@ public class MusicContainer : MonoBehaviour
 
     public Text musicName;
     public Text unlockableAmountText;
+
+    MusicManager musicManager;
     private void Start()
     {
+        musicManager = FindObjectOfType<MusicManager>();
+
         buyButton.onClick.AddListener(() =>
         {
-            ShopManager.Instance.UnlockMusic(music);
+            musicManager.UnlockMusic(music);
         });
 
         selectButton.onClick.AddListener(() =>
         {
             AudioManager.Instance.AddSelectedMusic(music);
-            ShopManager.Instance.SelectMusic(music);
+            musicManager.SelectMusic(music);
         });
     }
     private void Update()
@@ -32,7 +36,7 @@ public class MusicContainer : MonoBehaviour
         unlockableAmountText.text = music.unlockableCoins.ToString();
         musicName.text = music.musicName;
 
-        ShopManager.Instance.MusicStatus(music);
+        musicManager.MusicStatus(music);
 
         selectButton.gameObject.SetActive(!music.isSelected && !music.isLocked);
         buyButton.gameObject.SetActive(music.isLocked);

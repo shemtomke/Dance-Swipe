@@ -5,17 +5,9 @@ using UnityEngine.UI;
 
 public class ShopManager : MonoBehaviour
 {
-    public static ShopManager Instance;
-    private void Awake()
+    CoinsManager coinsManager;
+    private void Start()
     {
-        Instance = this;
-    }
-    int currentCoins;
-
-    public int GetCurrentCoins() { return currentCoins; }
-    public void UpdateCoins(int coins) { currentCoins = coins; }
-    public void Purchase(int amount)
-    {
-        currentCoins -= amount;
+        coinsManager = FindObjectOfType<CoinsManager>();
     }
 }

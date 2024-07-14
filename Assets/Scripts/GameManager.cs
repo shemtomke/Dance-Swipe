@@ -24,9 +24,11 @@ public class GameManager : MonoBehaviour
     public bool isStartGame = false;
 
     TapDanceManager tapDanceManager;
+    SocialMetricsManager socialMetricsManager;
     private void Start()
     {
         tapDanceManager = FindObjectOfType<TapDanceManager>();
+        socialMetricsManager = FindObjectOfType<SocialMetricsManager>();
 
         isStartGame = false;
         homeUI.SetActive(!isStartGame);
@@ -44,6 +46,8 @@ public class GameManager : MonoBehaviour
     }
     void StartGame()
     {
+        socialMetricsManager.CalculateFollowers();
+
         AudioManager.Instance.PlaySelectedMusic();
         isStartGame = true;
         isGameOver = false;
@@ -83,6 +87,7 @@ public class GameManager : MonoBehaviour
         if (isGameOver)
         {
             isStartGame = false;
+            Debug.Log("Is Game Over!");
         }
         //show gameover screen
         gameOverUI.SetActive(isGameOver);

@@ -18,6 +18,7 @@ public class CharacterManager : MonoBehaviour
     int currentSelectedCharacterIndex;
 
     Player player;
+    CoinsManager coinsManager;
     private void Start()
     {
         player = FindObjectOfType<Player>();
@@ -84,9 +85,9 @@ public class CharacterManager : MonoBehaviour
     }
     public void UnlockCharacter(int characterIndex)
     {
-        if (ShopManager.Instance.GetCurrentCoins() >= characterList[characterIndex].unlockableCoinsAmount)
+        if (coinsManager.GetCurrentCoins() >= characterList[characterIndex].unlockableCoinsAmount)
         {
-            ShopManager.Instance.Purchase(characterList[characterIndex].unlockableCoinsAmount);
+            coinsManager.DeductCoins(characterList[characterIndex].unlockableCoinsAmount);
             characterList[characterIndex].isLocked = false;
         }
     }

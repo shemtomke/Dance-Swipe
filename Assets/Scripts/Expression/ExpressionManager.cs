@@ -6,58 +6,88 @@ using UnityEngine.UI;
 
 public class ExpressionManager : MonoBehaviour
 {
+    [Header("Combo")]
     public List<GameObject> comboEffects;
-    public GameObject commentPrefab;
-    public Transform commentPosition;
+    public Vector3 comboPosition;
+
+    [Header("Emojis")]
     public GameObject emojiPrefab;
     [NonReorderable]
     public List<Sprite> positiveEmoji;
     [NonReorderable]
     public List<Sprite> negativeEmoji;
-    [NonReorderable]
-    public List<Expression> expression;
-    [NonReorderable]
-    public List<Expression> comboExpression;
+
+    [Header("Comments")]
+    public GameObject commentPrefab;
+    public Transform commentPosition;
     [NonReorderable]
     public List<Expression> goodExpression;
     [NonReorderable]
     public List<Expression> badExpression;
 
-    Likes likes;
+    SocialMetricsManager metricsManager;
     private void Start()
     {
-        likes = FindObjectOfType<Likes>();
+        metricsManager = FindObjectOfType<SocialMetricsManager>();
     }
-    public void ShowCommentMessage(int pointScore, bool isGood)
+    public GameObject Combo()
     {
-        StartCoroutine(ShowExpressionMessage(pointScore, isGood));
-    }
-    public void PerformCombo(int pointScore, int clickedButtons)
-    {
-        StartCoroutine(ShowExpressionMessage(pointScore, clickedButtons));
-    }
-    private IEnumerator ShowExpressionMessage(int pointScore, bool isGood)
-    {
-        GenerateEmoji(isGood);
-        likes.AddLikes(pointScore);
+        int randomComboIndex = Random.Range(0, comboEffects.Count);
+        GameObject combo = Instantiate(comboEffects[randomComboIndex]);
+        combo.transform.position = comboPosition;
 
-        yield return null;
+        return combo;
     }
-    private IEnumerator ShowExpressionMessage(int pointScore, int clickedButtons)
+    public GameObject RandomComment(bool isPositive)
     {
         GameObject comment = Instantiate(commentPrefab);
         comment.transform.SetParent(commentPosition, false);
 
         UserComment userComment = comment.GetComponent<UserComment>();
 
-        int randomExpression = Random.Range(0, comboExpression.Count);
-        userComment.commentText.text = comboExpression[randomExpression].expression;
+        if (isPositive)
+        {
+            int randomExpression = Random.Range(0, goodExpression.Count);
+            userComment.commentText.text = goodExpression[randomExpression].expression;
+        }
+        else
+        {
+            int randomExpression = Random.Range(0, badExpression.Count);
+            userComment.commentText.text = badExpression[randomExpression].expression;
+        }
+        
+        return comment;
+    }
+    // Comment & Emoji
+    public void ShowCommentMessage(int pointScore, bool isGood)
+    {
+        StartCoroutine(ShowExpressionMessage(pointScore, isGood));
+    }
+    private IEnumerator ShowExpressionMessage(int pointScore, bool isGood)
+    {
+        GameObject comment = RandomComment(isGood);
 
-        likes.AddLikes(pointScore * clickedButtons);
+        GenerateEmoji(isGood);
+        metricsManager.AddLikes(pointScore);
 
         yield return new WaitForSeconds(2f); // Wait for 2 seconds
 
         Destroy(comment);
+    }
+    // Combo
+    public void PerformCombo(int pointScore, int clickedButtons)
+    {
+        StartCoroutine(ShowCombo(pointScore, clickedButtons));
+    }
+    private IEnumerator ShowCombo(int pointScore, int clickedButtons)
+    {
+        GameObject combo = Combo();
+
+        metricsManager.AddLikes(pointScore * clickedButtons);
+
+        yield return new WaitForSeconds(2f); // Wait for 2 seconds
+
+        Destroy(combo);
     }
     public Sprite SelectEmoji(bool isPositive)
     {

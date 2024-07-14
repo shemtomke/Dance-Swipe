@@ -7,14 +7,17 @@ public class DanceAnimationManager : MonoBehaviour
 {
     public int currentDanceStyleIndex;
     public SkinnedMeshRenderer danceMeshModel;
+    public Text danceStyleName;
     public Text danceBuyAmount;
     public Button danceBuyButton;
     public Button nextDanceButton, previousDanceButton;
 
     AnimationManager animationManager;
     CharacterManager characterManager;
+    CoinsManager coinsManager;
     private void Start()
     {
+        coinsManager = FindObjectOfType<CoinsManager>();
         animationManager = FindObjectOfType<AnimationManager>();
         characterManager = FindObjectOfType<CharacterManager>();
 
@@ -63,16 +66,16 @@ public class DanceAnimationManager : MonoBehaviour
 
         animationManager.ChangeAnimationState(danceStyleAnimator, newDanceState, currentDanceState);
 
-        Debug.Log("Dance Model Mesh : " + danceMeshModel.sharedMesh.name);
+        danceStyleName.text = allDanceAnimations[index].danceName;
 
         danceBuyAmount.text = allDanceAnimations[index].unlockableCoins.ToString();
         danceBuyButton.gameObject.SetActive(allDanceAnimations[index].isLocked);
     }
     public void UnlockAnimation(int danceAnimationIndex)
     {
-        if (ShopManager.Instance.GetCurrentCoins() >= animationManager.allDanceAnimations[danceAnimationIndex].unlockableCoins)
+        if (coinsManager.GetCurrentCoins() >= animationManager.allDanceAnimations[danceAnimationIndex].unlockableCoins)
         {
-            ShopManager.Instance.Purchase(animationManager.allDanceAnimations[danceAnimationIndex].unlockableCoins);
+            coinsManager.DeductCoins(animationManager.allDanceAnimations[danceAnimationIndex].unlockableCoins);
             animationManager.allDanceAnimations[danceAnimationIndex].isLocked = false;
         }
     }

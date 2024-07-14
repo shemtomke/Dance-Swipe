@@ -8,10 +8,15 @@ public class MusicManager : MonoBehaviour
     public List<Music> musicList;
     public GameObject musicPrefabUI;
     public GameObject musicContentUI;
-    public int currentSelectedMusic;
+    public int currentSelectedMusic = 0;
 
+    CoinsManager coinsManager;
     private void Start()
     {
+        coinsManager = FindObjectOfType<CoinsManager>();
+
+        AudioManager.Instance.selectedMusic.clip = musicList[currentSelectedMusic].audioClip;
+
         ListAllMusic();
     }
     public void ListAllMusic()
@@ -27,9 +32,9 @@ public class MusicManager : MonoBehaviour
     }
     public void UnlockMusic(Music music)
     {
-        if (ShopManager.Instance.GetCurrentCoins() >= music.unlockableCoins)
+        if (coinsManager.GetCurrentCoins() >= music.unlockableCoins)
         {
-            ShopManager.Instance.Purchase(music.unlockableCoins);
+            coinsManager.DeductCoins(music.unlockableCoins);
             music.isLocked = false;
         }
     }

@@ -15,18 +15,27 @@ public class TapDanceManager : MonoBehaviour
         public bool isUsed = false;
     }
 
+    [Serializable]
+    public class TapButton
+    {
+        public GameObject tapButtonPrefab;
+
+    }
+
+    [NonReorderable]
+    public List<TapButton> tapButtons;
     [NonReorderable]
     public List<TapPositions> tapPositions = new List<TapPositions>();
     private Dictionary<Button, TapPositions> buttonToTapPositionMap = new Dictionary<Button, TapPositions>();
-    public List<Button> tapButtonsPrefab = new List<Button>();
-    public List<Sprite> danceIcons = new List<Sprite>();
     public Button tapButtonPrefab;
     public float waitTapButton;
     int count = 0;
 
     Player player;
     ExpressionManager expressionManager;
+    SocialMetricsManager socialMetricsManager;
 
+    [Header("Combo Properties")]
     public float comboTimer = 0f;
     public float comboTimeFrame = 1f; // 1 second for the combo
     public int comboCount = 0;
@@ -34,6 +43,8 @@ public class TapDanceManager : MonoBehaviour
     {
         player = FindObjectOfType<Player>();
         expressionManager = FindObjectOfType<ExpressionManager>();
+        socialMetricsManager = FindObjectOfType<SocialMetricsManager>();
+
         GenerateTapButtons();
     }
     private void Update()
@@ -90,6 +101,7 @@ public class TapDanceManager : MonoBehaviour
             if (!AudioManager.Instance.selectedMusic.isPlaying)
             {
                 Debug.Log("Game Over");
+                socialMetricsManager.CalculateFollowers();
                 GameManager.Instance.isGameOver = true;
                 GameManager.Instance.isStartGame = false;
                 break;

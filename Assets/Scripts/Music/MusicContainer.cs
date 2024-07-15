@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,9 +17,11 @@ public class MusicContainer : MonoBehaviour
     public Text unlockableAmountText;
 
     MusicManager musicManager;
+    CoinsManager coinsManager;
     private void Start()
     {
         musicManager = FindObjectOfType<MusicManager>();
+        coinsManager = FindObjectOfType<CoinsManager>();
 
         buyButton.onClick.AddListener(() =>
         {
@@ -41,5 +44,7 @@ public class MusicContainer : MonoBehaviour
         selectButton.gameObject.SetActive(!music.isSelected && !music.isLocked);
         buyButton.gameObject.SetActive(music.isLocked);
         selectedButton.gameObject.SetActive(music.isSelected);
+
+        buyButton.interactable = coinsManager.IsAvailableCoins(music.unlockableCoins);
     }
 }

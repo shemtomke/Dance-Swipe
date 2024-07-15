@@ -68,8 +68,10 @@ public class DanceAnimationManager : MonoBehaviour
 
         danceStyleName.text = allDanceAnimations[index].danceName;
 
-        danceBuyAmount.text = allDanceAnimations[index].unlockableCoins.ToString();
+        danceBuyAmount.text = allDanceAnimations[index].unlockableCoins.ToString("N0");
         danceBuyButton.gameObject.SetActive(allDanceAnimations[index].isLocked);
+
+        danceBuyButton.interactable = coinsManager.IsAvailableCoins(allDanceAnimations[index].unlockableCoins);
     }
     public void UnlockAnimation(int danceAnimationIndex)
     {

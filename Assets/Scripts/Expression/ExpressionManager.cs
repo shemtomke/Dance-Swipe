@@ -30,10 +30,15 @@ public class ExpressionManager : MonoBehaviour
     {
         metricsManager = FindObjectOfType<SocialMetricsManager>();
     }
-    public GameObject Combo()
+    public GameObject Combo(int comboCount)
     {
-        int randomComboIndex = Random.Range(0, comboEffects.Count);
-        GameObject combo = Instantiate(comboEffects[randomComboIndex]);
+        // Determine the combo index based on the combo count
+        int comboIndex = comboCount > 10 ? 4 :
+                         comboCount >= 9 ? 3 :
+                         comboCount >= 7 ? 2 :
+                         comboCount >= 5 ? 1 : 0;
+
+        GameObject combo = Instantiate(comboEffects[comboIndex]);
         combo.transform.position = comboPosition;
 
         return combo;
@@ -65,14 +70,14 @@ public class ExpressionManager : MonoBehaviour
     }
     private IEnumerator ShowExpressionMessage(int pointScore, bool isGood)
     {
-        GameObject comment = RandomComment(isGood);
+        //GameObject comment = RandomComment(isGood);
 
         GenerateEmoji(isGood);
         metricsManager.AddLikes(pointScore);
 
         yield return new WaitForSeconds(2f); // Wait for 2 seconds
 
-        Destroy(comment);
+        //Destroy(comment);
     }
     // Combo
     public void PerformCombo(int pointScore, int clickedButtons)
@@ -81,7 +86,7 @@ public class ExpressionManager : MonoBehaviour
     }
     private IEnumerator ShowCombo(int pointScore, int clickedButtons)
     {
-        GameObject combo = Combo();
+        GameObject combo = Combo(clickedButtons);
 
         metricsManager.AddLikes(pointScore * clickedButtons);
 

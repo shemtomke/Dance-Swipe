@@ -10,15 +10,31 @@ public class CoinsManager : MonoBehaviour
     int currentCoins;
     private void Start()
     {
-        currentCoins = 0;
+        LoadData();
     }
     private void Update()
     {
-        coinsText.text = currentCoins.ToString();
+        coinsText.text = currentCoins.ToString("N0");
+    }
+    void LoadData()
+    {
+        var saveManager = SaveManager.Instance;
+        saveManager.LoadInt(saveManager.GetCoinsKey());
+    }
+    void SaveData()
+    {
+        var saveManager = SaveManager.Instance;
+        saveManager.SaveInt(saveManager.GetCoinsKey(), currentCoins);
     }
     public int GetCurrentCoins() { return currentCoins; }
-    public void UpdateCoins(int coins) { currentCoins = coins; }
-    public void AddCoins(int coins) { currentCoins += coins; }
-    public void DeductCoins(int coins) { currentCoins -= coins; }
+    public void UpdateCoins(int coins) { currentCoins = coins; SaveData(); }
+    public bool IsAvailableCoins(int coins)
+    {
+        if (currentCoins >= coins)
+            return true;
+        return false;
+    }
+    public void AddCoins(int coins) { currentCoins += coins; SaveData(); }
+    public void DeductCoins(int coins) { currentCoins -= coins; SaveData(); }
     
 }

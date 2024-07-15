@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MusicManager : MonoBehaviour
 {
@@ -8,7 +9,10 @@ public class MusicManager : MonoBehaviour
     public List<Music> musicList;
     public GameObject musicPrefabUI;
     public GameObject musicContentUI;
+    public Text musicDurationText;
     public int currentSelectedMusic = 0;
+
+    private Coroutine musicTimerCoroutine;
 
     CoinsManager coinsManager;
     private void Start()
@@ -41,6 +45,37 @@ public class MusicManager : MonoBehaviour
     public void SelectMusic(Music music)
     {
         currentSelectedMusic = musicList.IndexOf(music);
+
+        StartMusicTimer();
+    }
+    public void StartMusicTimer()
+    {
+        if (musicTimerCoroutine != null)
+        {
+            StopCoroutine(musicTimerCoroutine);
+        }
+
+        musicTimerCoroutine = StartCoroutine(UpdateMusicTimer());
+    }
+    IEnumerator UpdateMusicTimer()
+    {
+        float duration = AudioManager.Instance.selectedMusic.clip.length;
+        float remainingTime = duration;
+
+        while (remainingTime > 0)
+        {
+            musicDurationText.text = FormatTime(remainingTime);
+            yield return new WaitForSeconds(1f);
+            remainingTime -= 1f;
+        }
+
+        musicDurationText.text = "00:00";
+    }
+    string FormatTime(float time)
+    {
+        int minutes = Mathf.FloorToInt(time / 60F);
+        int seconds = Mathf.FloorToInt(time % 60F);
+        return string.Format("{0:00}:{1:00}", minutes, seconds);
     }
     public void MusicStatus(Music music)
     {

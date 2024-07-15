@@ -6,9 +6,14 @@ public class Player : MonoBehaviour
 {
     public SkinnedMeshRenderer currentPlayerMesh;
     public Animator anim;
+    CharacterManager characterManager;
 
-    public void UpdatePlayerCharacterMesh(Mesh mesh)
+    private void Start()
     {
-        currentPlayerMesh.sharedMesh = mesh;
+        characterManager = FindObjectOfType<CharacterManager>();
+    }
+    private void Update()
+    {
+        currentPlayerMesh.sharedMesh = characterManager.GetSelectedCharacter().characterMesh;
     }
 }

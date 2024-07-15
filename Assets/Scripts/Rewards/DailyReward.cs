@@ -1,30 +1,94 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class DailyReward : MonoBehaviour
 {
     // Every Day user will get 5 coins when opening the app
-    public Text dayText; //Day 1, 2
+    public Text dayText; // Day 1, 2, etc.
     public Button claimButton;
-    public Text coinsMultiplierText; // x 20 coins 
+    public Text coinsMultiplierText; // x 20 coins
     public Text waitTimeText;
 
-    int rewardCoins;
-    int rewardMultiplier;
+    private int rewardCoins = 2;
+    private int rewardMultiplier = 1;
+    private int currentDay = 1;
+    private DateTime lastClaimTime;
+    private TimeSpan claimCooldown = new TimeSpan(24, 0, 0); // 24 hours
+
+    CoinsManager coinsManager;
     private void Start()
     {
-        claimButton.onClick.AddListener(() =>
+        coinsManager = FindObjectOfType<CoinsManager>();
+
+        var saveManager = SaveManager.Instance;
+        var claimTime = saveManager.GetClaimTimeKey();
+        var day = saveManager.GetDayKey();
+        // Load last claim time and current day from player prefs (persistent storage)
+        if (saveManager.HasKey(claimTime))
         {
-            ClaimDailyReward();
-        });
+            lastClaimTime = DateTime.Parse(saveManager.LoadString(claimTime));
+            currentDay = saveManager.LoadInt(claimTime, 1);
+        }
+        else
+        {
+            lastClaimTime = DateTime.Now;
+            currentDay = 1;
+        }
+
+        claimButton.onClick.AddListener(ClaimDailyReward);
+        UpdateUI();
+        StartCoroutine(UpdateWaitTime());
     }
-    public void ClaimDailyReward()
+
+    private void UpdateUI()
     {
-
+        dayText.text = $"Day {currentDay}";
+        coinsMultiplierText.text = $"x {rewardMultiplier * rewardCoins} coins";
     }
-    // Track Remaining Time -> 24 hours
-    // Update Day from Day 1 to endless
 
+    private void ClaimDailyReward()
+    {
+        DateTime now = DateTime.Now;
+        if (now - lastClaimTime >= claimCooldown)
+        {
+            // Claim the reward
+            int coins = rewardMultiplier * rewardCoins;
+            coinsManager.AddCoins(coins);
+
+            // Update the last claim time and increment the day
+            lastClaimTime = now;
+            currentDay++;
+            rewardMultiplier++;
+
+            // Save the current state
+            var saveManager = SaveManager.Instance;
+            saveManager.SaveString(saveManager.GetClaimTimeKey(), lastClaimTime.ToString());
+            saveManager.SaveInt(saveManager.GetDayKey(), currentDay);
+
+            UpdateUI();
+            StartCoroutine(UpdateWaitTime());
+        }
+    }
+
+    private IEnumerator UpdateWaitTime()
+    {
+        while (true)
+        {
+            DateTime now = DateTime.Now;
+            TimeSpan timeUntilNextClaim = (lastClaimTime + claimCooldown) - now;
+
+            if (timeUntilNextClaim <= TimeSpan.Zero)
+            {
+                claimButton.interactable = true;
+            }
+            else
+            {
+                waitTimeText.text = $"{timeUntilNextClaim.Hours:D2}:{timeUntilNextClaim.Minutes:D2}:{timeUntilNextClaim.Seconds:D2}";
+                claimButton.interactable = false;
+            }
+            yield return new WaitForSeconds(1); // Update every second
+        }
+    }
 }

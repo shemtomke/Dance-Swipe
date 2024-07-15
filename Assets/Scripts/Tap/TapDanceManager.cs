@@ -29,6 +29,8 @@ public class TapDanceManager : MonoBehaviour
     private Dictionary<Button, TapPositions> buttonToTapPositionMap = new Dictionary<Button, TapPositions>();
     public Button tapButtonPrefab;
     public float waitTapButton;
+    public float decreaseTimerInterval;
+    public float minWaitTime;
     int count = 0;
 
     Player player;
@@ -76,7 +78,7 @@ public class TapDanceManager : MonoBehaviour
             {
                 newButton = Instantiate(tapButtonPrefab);
                 newButton.gameObject.name = "Tap Dance " + count;
-                
+
                 selectedPosition = CheckAvailablePosition();
 
                 if (selectedPosition == null)
@@ -92,6 +94,9 @@ public class TapDanceManager : MonoBehaviour
 
             // Map the button to the selected tap position
             buttonToTapPositionMap[newButton] = selectedPosition;
+
+            // Adjust the wait time ensuring it doesn't go below the minimum wait time
+            waitTapButton = Mathf.Max(minWaitTime, waitTapButton - decreaseTimerInterval); // Decrease by 0.1 seconds for each iteration
 
             yield return new WaitForSeconds(waitTapButton);
 
@@ -149,8 +154,8 @@ public class TapDanceManager : MonoBehaviour
             comboCount++;
             if (comboCount >= 3)
             {
-                Debug.Log("Combo!");
                 expressionManager.PerformCombo(10, comboCount);
+                Debug.Log("Combo Count : " + comboCount);
                 //ResetCombo();
             }
             else

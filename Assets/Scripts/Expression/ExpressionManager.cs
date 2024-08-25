@@ -33,10 +33,10 @@ public class ExpressionManager : MonoBehaviour
     public GameObject Combo(int comboCount)
     {
         // Determine the combo index based on the combo count
-        int comboIndex = comboCount > 10 ? 4 :
-                         comboCount >= 9 ? 3 :
-                         comboCount >= 7 ? 2 :
-                         comboCount >= 5 ? 1 : 0;
+        int comboIndex = comboCount >= 10 ? 4 :
+                         comboCount >= 8 ? 3 :
+                         comboCount >= 6 ? 2 :
+                         comboCount >= 4 ? 1 : 0;
 
         GameObject combo = Instantiate(comboEffects[comboIndex]);
         combo.transform.position = comboPosition;

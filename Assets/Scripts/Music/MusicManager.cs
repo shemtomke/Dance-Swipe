@@ -14,15 +14,26 @@ public class MusicManager : MonoBehaviour
 
     private Coroutine musicTimerCoroutine;
 
+    int unlockedMusic;
+
+    MusicType currentMusicType;
+
     CoinsManager coinsManager;
     private void Start()
     {
         coinsManager = FindObjectOfType<CoinsManager>();
 
+        // Select First Unlocked Music
         AudioManager.Instance.selectedMusic.clip = musicList[currentSelectedMusic].audioClip;
+        SetMusicType(musicList[currentSelectedMusic].musicType);
 
+        // Generate list of all music
         ListAllMusic();
+
+        unlockedMusic = SaveLoad.Instance.LoadInt(SaveLoad.Instance.GetUnlockedMusicKey());
     }
+    public MusicType GetMusicType() { return currentMusicType; }
+    public void SetMusicType(MusicType type) { currentMusicType = type; }
     public void ListAllMusic()
     {
         for (int i = 0; i < musicList.Count; i++)
@@ -40,12 +51,15 @@ public class MusicManager : MonoBehaviour
         {
             coinsManager.DeductCoins(music.unlockableCoins);
             music.isLocked = false;
+
+            unlockedMusic++;
+            SaveLoad.Instance.SaveInt(SaveLoad.Instance.GetUnlockedMusicKey(), unlockedMusic);
         }
     }
     public void SelectMusic(Music music)
     {
         currentSelectedMusic = musicList.IndexOf(music);
-
+        SetMusicType(music.musicType);
         StartMusicTimer();
     }
     public void StartMusicTimer()

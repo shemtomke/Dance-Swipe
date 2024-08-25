@@ -7,6 +7,7 @@ using UnityEngine;
 public class Music
 {
     public string musicName;
+    public MusicType musicType;
     public int unlockableCoins;
     public bool isLocked = true;
     public bool isSelected = false;

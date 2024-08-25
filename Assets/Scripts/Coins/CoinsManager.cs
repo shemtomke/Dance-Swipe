@@ -18,12 +18,12 @@ public class CoinsManager : MonoBehaviour
     }
     void LoadData()
     {
-        var saveManager = SaveManager.Instance;
+        var saveManager = SaveLoad.Instance;
         saveManager.LoadInt(saveManager.GetCoinsKey());
     }
     void SaveData()
     {
-        var saveManager = SaveManager.Instance;
+        var saveManager = SaveLoad.Instance;
         saveManager.SaveInt(saveManager.GetCoinsKey(), currentCoins);
     }
     public int GetCurrentCoins() { return currentCoins; }

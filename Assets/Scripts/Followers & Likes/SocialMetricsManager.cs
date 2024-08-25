@@ -26,13 +26,13 @@ public class SocialMetricsManager : MonoBehaviour
     }
     void LoadData()
     {
-        var saveManager = SaveManager.Instance;
-        saveManager.LoadInt(saveManager.GetFollowersKey());
-        saveManager.LoadInt(saveManager.GetLikesKey());
+        var saveManager = SaveLoad.Instance;
+        followers = saveManager.LoadInt(saveManager.GetFollowersKey());
+        likes = saveManager.LoadInt(saveManager.GetLikesKey());
     }
     void SaveData()
     {
-        var saveManager = SaveManager.Instance;
+        var saveManager = SaveLoad.Instance;
         saveManager.SaveInt(saveManager.GetFollowersKey(), followers);
         saveManager.SaveInt(saveManager.GetLikesKey(), likes);
     }

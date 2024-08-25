@@ -36,14 +36,17 @@ public class TapDanceManager : MonoBehaviour
     Player player;
     ExpressionManager expressionManager;
     SocialMetricsManager socialMetricsManager;
+    AnimationManager animationManager;
 
     [Header("Combo Properties")]
     public float comboTimer = 0f;
     public float comboTimeFrame = 1f; // 1 second for the combo
     public int comboCount = 0;
+    private bool isComboActive = false; // Flag to track combo state
     private void Start()
     {
         player = FindObjectOfType<Player>();
+        animationManager = FindObjectOfType<AnimationManager>();
         expressionManager = FindObjectOfType<ExpressionManager>();
         socialMetricsManager = FindObjectOfType<SocialMetricsManager>();
 
@@ -77,6 +80,9 @@ public class TapDanceManager : MonoBehaviour
             while (selectedPosition == null)
             {
                 newButton = Instantiate(tapButtonPrefab);
+
+                // Random Tap Buttons
+
                 newButton.gameObject.name = "Tap Dance " + count;
 
                 selectedPosition = CheckAvailablePosition();
@@ -97,6 +103,10 @@ public class TapDanceManager : MonoBehaviour
 
             // Adjust the wait time ensuring it doesn't go below the minimum wait time
             waitTapButton = Mathf.Max(minWaitTime, waitTapButton - decreaseTimerInterval); // Decrease by 0.1 seconds for each iteration
+
+            // Min Wait Time is the current dance style minize 2 secs or 1 - can be random
+            //float waitTime = 0.25f * animationManager.GetCurrentStateTime();
+            //waitTapButton = waitTime;
 
             yield return new WaitForSeconds(waitTapButton);
 
@@ -136,6 +146,7 @@ public class TapDanceManager : MonoBehaviour
             return null;
         }
     }
+
     void UpdateComboTimer()
     {
         if (comboTimer > 0)
@@ -143,38 +154,45 @@ public class TapDanceManager : MonoBehaviour
             comboTimer -= Time.deltaTime;
             if (comboTimer <= 0)
             {
+                PerformCombo(); // Perform the combo when the timer ends
                 ResetCombo();
             }
         }
     }
+
     public void OnTapButtonClicked()
     {
         if (comboTimer > 0)
         {
+            // Increase combo count if the timer is active
             comboCount++;
-            if (comboCount >= 3)
-            {
-                expressionManager.PerformCombo(10, comboCount);
-                Debug.Log("Combo Count : " + comboCount);
-                //ResetCombo();
-            }
-            else
-            {
-                comboTimer = comboTimeFrame; // Reset the timer
-            }
         }
         else
         {
+            // Start a new combo
             comboCount = 1;
-            comboTimer = comboTimeFrame; // Start the timer
+            comboTimer = comboTimeFrame;
+            isComboActive = true;
+        }
+    }
+    void PerformCombo()
+    {
+        if (isComboActive)
+        {
+            if (comboCount >= 2)
+            {
+                expressionManager.PerformCombo(10, comboCount);
+                Debug.Log("Combo Count : " + comboCount);
+            }
+            isComboActive = false; // Reset combo state
         }
     }
     void ResetCombo()
     {
         comboCount = 0;
         comboTimer = 0;
+        isComboActive = false;
     }
-
     public void OnTapButtonDestroyed(Button button)
     {
         // Check if the button is in the map

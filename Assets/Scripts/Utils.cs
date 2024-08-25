@@ -17,8 +17,26 @@ public enum ArrowState
 {
     None, Up, Down, Left, Right
 }
+public enum MusicType
+{
+    HipHop,
+    DanceHall,
+    RnB,
+    Genge
+}
+public enum RewardType
+{
+    Coins,
+    Followers,
+    Likes,
+}
 public enum ChallengeType
 {
-    Statement,
-    ProgressBar,
+    UnlockCharacters,
+    UnlockMusic,
+    UnlockDanceStyle,
+    Likes,
+    Followers,
+    CompletedChallenges,
+    Coins
 }

@@ -17,6 +17,7 @@ public class CharacterManager : MonoBehaviour
 
     int currentCharacterIndex;
     int currentSelectedCharacterIndex = 0;
+    int unlockedCharacters;
     Character selectedCharacter;
 
     Player player;
@@ -49,6 +50,8 @@ public class CharacterManager : MonoBehaviour
         {
             UnlockCharacter(currentCharacterIndex);
         });
+
+        unlockedCharacters = SaveLoad.Instance.LoadInt(SaveLoad.Instance.GetUnlockedCharactersKey());
     }
     private void Update()
     {
@@ -91,6 +94,10 @@ public class CharacterManager : MonoBehaviour
         {
             coinsManager.DeductCoins(characterList[characterIndex].unlockableCoinsAmount);
             characterList[characterIndex].isLocked = false;
+
+            unlockedCharacters++;
+
+            SaveLoad.Instance.SaveInt(SaveLoad.Instance.GetUnlockedCharactersKey(), unlockedCharacters);
         }
     }
     public void SelectCharacter()

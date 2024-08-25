@@ -22,7 +22,7 @@ public class DailyReward : MonoBehaviour
     {
         coinsManager = FindObjectOfType<CoinsManager>();
 
-        var saveManager = SaveManager.Instance;
+        var saveManager = SaveLoad.Instance;
         var claimTime = saveManager.GetClaimTimeKey();
         var day = saveManager.GetDayKey();
         // Load last claim time and current day from player prefs (persistent storage)
@@ -63,7 +63,7 @@ public class DailyReward : MonoBehaviour
             rewardMultiplier++;
 
             // Save the current state
-            var saveManager = SaveManager.Instance;
+            var saveManager = SaveLoad.Instance;
             saveManager.SaveString(saveManager.GetClaimTimeKey(), lastClaimTime.ToString());
             saveManager.SaveInt(saveManager.GetDayKey(), currentDay);
 

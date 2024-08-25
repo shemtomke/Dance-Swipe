@@ -65,7 +65,7 @@ public class TapDanceButton : MonoBehaviour
         var newDanceState = animationManager.GetRandomAnimation();
         var playerAnimator = player.anim;
 
-        animationManager.ChangeAnimationState(playerAnimator, newDanceState, currentDanceState);
+        animationManager.SyncAnimationState(playerAnimator, newDanceState, currentDanceState);
 
         Destroy(gameObject);
 

@@ -28,7 +28,7 @@ public class ExpressionManager : MonoBehaviour
     SocialMetricsManager metricsManager;
     private void Start()
     {
-        metricsManager = FindObjectOfType<SocialMetricsManager>();
+        metricsManager = FindFirstObjectByType<SocialMetricsManager>();
     }
     public GameObject Combo(int comboCount)
     {

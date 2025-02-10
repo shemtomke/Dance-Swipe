@@ -6,13 +6,6 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
-
-    private void Awake()
-    {
-        Instance = this;
-    }
-
     [SerializeField] GameObject gameOverUI;
     [SerializeField] Button tapScreenButton;
     [SerializeField] GameObject homeUI;
@@ -27,9 +20,9 @@ public class GameManager : MonoBehaviour
     MusicManager musicManager;
     private void Start()
     {
-        tapDanceManager = FindObjectOfType<TapDanceManager>();
-        musicManager = FindObjectOfType<MusicManager>();
-        socialMetricsManager = FindObjectOfType<SocialMetricsManager>();
+        tapDanceManager = FindFirstObjectByType<TapDanceManager>();
+        musicManager = FindFirstObjectByType<MusicManager>();
+        socialMetricsManager = FindFirstObjectByType<SocialMetricsManager>();
 
         isStartGame = false;
         homeUI.SetActive(!isStartGame);

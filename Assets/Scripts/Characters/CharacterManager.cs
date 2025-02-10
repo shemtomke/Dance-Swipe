@@ -12,11 +12,12 @@ public class CharacterManager : MonoBehaviour
     public Text characterSelectionBuyAmount;
     public Button characterSelectButton, characterSelectedButton, characterBuyButton;
     public Button nextCharacterButton, previousCharacterButton;
-    [NonReorderable]
+
+    [Header("Charachter List")]
     public List<Character> characterList;
 
     int currentCharacterIndex;
-    int currentSelectedCharacterIndex = 0;
+    [SerializeField] int currentSelectedCharacterIndex = 0;
     int unlockedCharacters;
     Character selectedCharacter;
 
@@ -24,8 +25,8 @@ public class CharacterManager : MonoBehaviour
     CoinsManager coinsManager;
     private void Start()
     {
-        player = FindObjectOfType<Player>();
-        coinsManager = FindObjectOfType<CoinsManager>();
+        player = FindFirstObjectByType<Player>();
+        coinsManager = FindFirstObjectByType<CoinsManager>();
 
         selectedCharacter = characterList[currentSelectedCharacterIndex];
 

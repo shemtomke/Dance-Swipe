@@ -8,12 +8,15 @@ public class Player : MonoBehaviour
     public Animator anim;
     CharacterManager characterManager;
 
+    AnimationManager animationManager;
     private void Start()
     {
-        characterManager = FindObjectOfType<CharacterManager>();
+        characterManager = FindFirstObjectByType<CharacterManager>();
+        animationManager = FindFirstObjectByType<AnimationManager>();
     }
     private void Update()
     {
         currentPlayerMesh.sharedMesh = characterManager.GetSelectedCharacter().characterMesh;
+        //animationManager.ProcessAwaitingDances(anim);
     }
 }

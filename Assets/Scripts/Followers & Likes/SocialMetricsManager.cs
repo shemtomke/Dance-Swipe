@@ -21,8 +21,32 @@ public class SocialMetricsManager : MonoBehaviour
     }
     void Update()
     {
-        followersText.text = followers.ToString("N0");
-        likesText.text = likes.ToString("N0");
+        followersText.text = FormatNumber(followers);
+        likesText.text = FormatNumber(likes);
+    }
+    public string FormatNumber(int value)
+    {
+        float num = value;
+        string suffix = "";
+
+        if (num >= 1_000_000_000) // Billions (B)
+        {
+            num /= 1_000_000_000f;
+            suffix = "B";
+        }
+        else if (num >= 1_000_000) // Millions (M)
+        {
+            num /= 1_000_000f;
+            suffix = "M";
+        }
+        else if (num >= 1_000) // Thousands (k)
+        {
+            num /= 1_000f;
+            suffix = "K";
+        }
+
+        // Format the number with one decimal place and remove .0 if it's a whole number
+        return num.ToString(num % 1 == 0 ? "0" : "0.0") + suffix;
     }
     void LoadData()
     {

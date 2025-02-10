@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class AnimationManager : MonoBehaviour
 {
-    [NonReorderable]
     public List<DanceAnimation> allDanceAnimations;
-
+    public List<AwaitingDance> awaitingDances = new List<AwaitingDance>();
     public Animator danceStyleAnimator;
     public string currentPlayerState, currentDanceStyleState;
     float currentDanceStateTime;
@@ -16,24 +15,23 @@ public class AnimationManager : MonoBehaviour
     MusicManager musicManager;
     private void Start()
     {
-        player = FindObjectOfType<Player>();
-        musicManager = FindObjectOfType<MusicManager>();
-        shopManager = FindObjectOfType<ShopManager>();
-
-    }
-    private void Update()
-    {
-        
+        player = FindFirstObjectByType<Player>();
+        musicManager = FindFirstObjectByType<MusicManager>();
+        shopManager = FindFirstObjectByType<ShopManager>();
     }
     // Synchronous Animation Change
-    public void SyncAnimationState(Animator animator, string newState, string currentState)
+    public void SyncAnimationState(Animator animator, string newState)
     {
-        if (currentState == newState) return;
+        AnimatorStateInfo currentState = animator.GetCurrentAnimatorStateInfo(0);
 
-        // Wait till the dance move is completed to transition
-        
+        if (currentState.IsName(newState))
+        {
+            // If the new state is the same as the current one, don't transition
+            return;
+        }
+
+        //awaitingDances.Add(new AwaitingDance(newState, false));
         animator.CrossFadeInFixedTime(newState, 0.25f);
-        currentState = newState;
     }
     // UnSynchronous Animation Change 
     public void UnSyncAnimationState(Animator animator, string newState, string currentState)
@@ -42,6 +40,36 @@ public class AnimationManager : MonoBehaviour
 
         animator.Play(newState);
         currentState = newState;
+    }
+    public void ProcessAwaitingDances(Animator animator)
+    {
+        if (awaitingDances.Count > 0)
+        {
+            AnimatorStateInfo currentState = animator.GetCurrentAnimatorStateInfo(0);
+
+            // Check if animation is almost complete
+            if (currentState.normalizedTime >= 0.95f && !awaitingDances[0].isCompleted)
+            {
+                awaitingDances[0].isCompleted = true;
+            }
+
+            // If completed, remove from list and transition
+            if (awaitingDances[0].isCompleted)
+            {
+                awaitingDances.RemoveAt(0);
+
+                if (awaitingDances.Count > 0)
+                {
+                    animator.CrossFadeInFixedTime(awaitingDances[0].danceState, 0.25f);
+                }
+            }
+        }
+        else
+        {
+            // If no awaiting dances, loop the current animation state
+            AnimatorStateInfo currentState = animator.GetCurrentAnimatorStateInfo(0);
+            animator.Play(currentState.fullPathHash, 0, 0);
+        }
     }
     DanceAnimation GetCurrentAnimation()
     {

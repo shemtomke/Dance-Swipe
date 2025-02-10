@@ -22,9 +22,7 @@ public class TapDanceManager : MonoBehaviour
 
     }
 
-    [NonReorderable]
     public List<TapButton> tapButtons;
-    [NonReorderable]
     public List<TapPositions> tapPositions = new List<TapPositions>();
     private Dictionary<Button, TapPositions> buttonToTapPositionMap = new Dictionary<Button, TapPositions>();
     public Button tapButtonPrefab;
@@ -37,6 +35,7 @@ public class TapDanceManager : MonoBehaviour
     ExpressionManager expressionManager;
     SocialMetricsManager socialMetricsManager;
     AnimationManager animationManager;
+    GameManager gameManager;
 
     [Header("Combo Properties")]
     public float comboTimer = 0f;
@@ -45,10 +44,11 @@ public class TapDanceManager : MonoBehaviour
     private bool isComboActive = false; // Flag to track combo state
     private void Start()
     {
-        player = FindObjectOfType<Player>();
-        animationManager = FindObjectOfType<AnimationManager>();
-        expressionManager = FindObjectOfType<ExpressionManager>();
-        socialMetricsManager = FindObjectOfType<SocialMetricsManager>();
+        player = FindFirstObjectByType<Player>();
+        gameManager = FindFirstObjectByType<GameManager>();
+        animationManager = FindFirstObjectByType<AnimationManager>();
+        expressionManager = FindFirstObjectByType<ExpressionManager>();
+        socialMetricsManager = FindFirstObjectByType<SocialMetricsManager>();
 
         GenerateTapButtons();
     }
@@ -68,7 +68,7 @@ public class TapDanceManager : MonoBehaviour
         while (true)
         {
             // Wait until the game has started
-            while (!GameManager.Instance.isStartGame)
+            while (!gameManager.isStartGame)
             {
                 yield return null;
             }
@@ -117,8 +117,8 @@ public class TapDanceManager : MonoBehaviour
             {
                 Debug.Log("Game Over");
                 socialMetricsManager.CalculateFollowers();
-                GameManager.Instance.isGameOver = true;
-                GameManager.Instance.isStartGame = false;
+                gameManager.isGameOver = true;
+                gameManager.isStartGame = false;
                 break;
             }
         }

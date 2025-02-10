@@ -26,10 +26,10 @@ public class TapDanceButton : MonoBehaviour
     }
     private void Start()
     {
-        player = FindObjectOfType<Player>();
-        animationManager = FindObjectOfType<AnimationManager>();
-        tapDanceManager = FindObjectOfType<TapDanceManager>();
-        expressionManager = FindObjectOfType<ExpressionManager>();
+        player = FindFirstObjectByType<Player>();
+        animationManager = FindFirstObjectByType<AnimationManager>();
+        tapDanceManager = FindFirstObjectByType<TapDanceManager>();
+        expressionManager = FindFirstObjectByType<ExpressionManager>();
 
         button.onClick.AddListener(() =>
         {
@@ -61,11 +61,10 @@ public class TapDanceButton : MonoBehaviour
 
         expressionManager.ShowCommentMessage(10, true);
 
-        var currentDanceState = animationManager.currentPlayerState;
         var newDanceState = animationManager.GetRandomAnimation();
         var playerAnimator = player.anim;
 
-        animationManager.SyncAnimationState(playerAnimator, newDanceState, currentDanceState);
+        animationManager.SyncAnimationState(playerAnimator, newDanceState);
 
         Destroy(gameObject);
 
